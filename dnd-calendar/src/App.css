@@ -36,6 +36,9 @@ h2 {
   color: white;
   padding: 10px;
   border-radius: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .rbc-toolbar button {
@@ -43,11 +46,32 @@ h2 {
   color: white;
   border: none;
   padding: 6px 12px;
-  margin: 0 4px;
+  margin: 4px;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .rbc-toolbar button:hover {
   background: #45a049;
+}
+
+/* ✅ Mobile Optimization */
+@media (max-width: 768px) {
+  .calendar-container {
+    padding: 10px;
+  }
+  .rbc-toolbar {
+    flex-direction: column;
+    align-items: center;
+  }
+  .rbc-toolbar button {
+    width: 100%;
+    margin: 4px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .rbc-btn-group:nth-child(2) {
+    display: none; /* Hide week/day view buttons */
+  }
 }

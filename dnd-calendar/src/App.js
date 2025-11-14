@@ -6,7 +6,7 @@ import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { db } from "./firebase";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from "firebase/firestore";
 
 const locales = { "en-US": require("date-fns/locale/en-US") };
 const localizer = dateFnsLocalizer({ format, parse, startOfWeek, getDay, locales });
@@ -18,27 +18,43 @@ export default function App() {
   useEffect(() => {
     const fetchEvents = async () => {
       const querySnapshot = await getDocs(collection(db, "availability"));
-      const fetchedEvents = querySnapshot.docs.map(doc => ({
-        ...doc.data(),
-        start: new Date(doc.data().start),
-        end: new Date(doc.data().end)
+      const fetchedEvents = querySnapshot.docs.map(docSnap => ({
+        id: docSnap.id,
+        ...docSnap.data(),
+        start: new Date(docSnap.data().start),
+        end: new Date(docSnap.data().end)
       }));
       setEvents(fetchedEvents);
     };
     fetchEvents();
   }, []);
 
-  // ✅ Add new event to Firestore
+  // ✅ Add new event
   const handleSelectSlot = async (slotInfo) => {
     const title = prompt("Enter your name or note:");
     if (title) {
       const newEvent = { start: slotInfo.start, end: slotInfo.end, title };
-      await addDoc(collection(db, "availability"), {
+      const docRef = await addDoc(collection(db, "availability"), {
         ...newEvent,
         start: newEvent.start.toISOString(),
         end: newEvent.end.toISOString()
       });
-      setEvents([...events, newEvent]);
+      setEvents([...events, { ...newEvent, id: docRef.id }]);
+    }
+  };
+
+  // ✅ Edit or Delete event
+  const handleSelectEvent = async (event) => {
+    const action = prompt(`Type "edit" to change or "delete" to remove this entry:`);
+    if (action === "delete") {
+      await deleteDoc(doc(db, "availability", event.id));
+      setEvents(events.filter(e => e.id !== event.id));
+    } else if (action === "edit") {
+      const newTitle = prompt("Enter new name or note:", event.title);
+      if (newTitle) {
+        await updateDoc(doc(db, "availability", event.id), { title: newTitle });
+        setEvents(events.map(e => e.id === event.id ? { ...e, title: newTitle } : e));
+      }
     }
   };
 
@@ -52,6 +68,7 @@ export default function App() {
         endAccessor="end"
         selectable
         onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
       />
     </div>
   );
