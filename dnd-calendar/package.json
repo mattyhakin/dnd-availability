@@ -2,7 +2,7 @@
   "name": "dnd-calendar",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://mattyhakin.github.io/dnd-calendar",
+  "homepage": "https://mattyhakin.github.io/dnd-availability",
   "dependencies": {
     "date-fns": "2.30.0",
     "firebase": "^11.0.0",
