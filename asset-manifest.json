@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/dnd-calendar/static/css/main.bd7dfd4b.css",
+    "main.js": "/dnd-calendar/static/js/main.ffaffdc4.js",
+    "static/js/488.e2e99a67.chunk.js": "/dnd-calendar/static/js/488.e2e99a67.chunk.js",
+    "index.html": "/dnd-calendar/index.html",
+    "main.bd7dfd4b.css.map": "/dnd-calendar/static/css/main.bd7dfd4b.css.map",
+    "main.ffaffdc4.js.map": "/dnd-calendar/static/js/main.ffaffdc4.js.map",
+    "488.e2e99a67.chunk.js.map": "/dnd-calendar/static/js/488.e2e99a67.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bd7dfd4b.css",
+    "static/js/main.ffaffdc4.js"
+  ]
+}
